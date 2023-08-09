@@ -3,15 +3,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getFirestore, setDoc, getDoc, addDoc, collection, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDUHRQYyiEN97qtdjMiAhr3iHCDESDx5As",
-    authDomain: "vidconnect-6b953.firebaseapp.com",
-    projectId: "vidconnect-6b953",
-    storageBucket: "vidconnect-6b953.appspot.com",
-    messagingSenderId: "963969004575",
-    appId: "1:963969004575:web:58eec302874d1f2517912a",
-    measurementId: "G-35X3T02F4V"
-};
+//add your firebaseconfig 
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
