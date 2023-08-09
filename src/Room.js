@@ -1,22 +1,21 @@
-// Room.js
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
-import { useUser } from "./UserContext"; // Import useUser hook
+import { useUser } from "./UserContext";
 
 const Room = () => {
   const { roomID } = useParams();
-  const userDetails = useUser(); // Access userDetails from context
+  const userDetails = useUser(); 
 
   const meeting = async (element) => {
-    const appID = 1535546174;
-    const serverSecret = "f2a0b86ccb9866e1cfc929d8e3d7cbfa";
+    // const appID = "add your appID from zegocloud";
+    // const serverSecret = "add your serverSecret from zegocloud";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
       roomID,
       Date.now().toString(),
-      userDetails.name // Use the username from userDetails
+      userDetails.name 
     );
     const zp = ZegoUIKitPrebuilt.create(kitToken);
       if(zp){
