@@ -52,7 +52,6 @@ const About = () => {
               <p className="italic text-gray-600">Designer</p>
             </div>
           </div>
-          {/* Add more team members here */}
         </div>
       </div>
     </div>
