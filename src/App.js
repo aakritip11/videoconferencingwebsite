@@ -1,24 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import Home from "./Home";
+import Room from "./Room";
+import Auth from "./Auth";
+import Account from "./Account";
+import { auth, getUserFromDatabase } from "./Firebase";
+import About from "./About";
+import Navbar from "./Navbar";
+import { UserContext } from "./UserContext";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
+  
+  const fetchUserDetails = async (uid) => {
+    const userDetails = await getUserFromDatabase(uid);
+    setUserDetails(userDetails);
+  };
+
+  useEffect(() => {
+    const listener = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsAuthenticated(true);
+        fetchUserDetails(user.uid);
+      } else {
+        setIsAuthenticated(false);
+        setUserDetails({});
+      }
+    });
+
+    return () => listener();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <UserContext.Provider value={userDetails}>
+    <div>
+      <Navbar userDetails={userDetails}/>
+      <Routes>
+        <Route path="/" element={<Home isAuthenticated={isAuthenticated}/>} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/signup" element={<Auth signup />} />
+        <Route path="/room/:roomID" element={<Room />} />
+
+        <Route
+          path="/account"
+          element={
+            isAuthenticated ? (
+              <Account userDetails={userDetails} auth={isAuthenticated} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      </Routes>
     </div>
+    </UserContext.Provider>
   );
 }
 
